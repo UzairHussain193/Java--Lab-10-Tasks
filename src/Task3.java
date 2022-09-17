@@ -2,10 +2,12 @@
 // from the students write it in the file and closes the file.
 
 import java.io.*;
+import java.util.Scanner;
 
 public class Task3 {
     public static void main(String[] args) throws Exception {
-        File myObj = new File("bufferfile.json");
+        Scanner sc = new Scanner(System.in);
+        File myObj = new File("writefile.txt");
         try {
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
@@ -16,23 +18,33 @@ public class Task3 {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+        String name, roll;
 
-        FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter(myObj);
-            
+            FileWriter myWriter = new FileWriter("writefile.txt");
+
+            System.out.println("Enter your name: ");
+            name = sc.nextLine();
+            System.out.println("Enter your roll no: ");
+            roll = sc.nextLine();
+            myWriter.write(name + "\t" + roll);
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
+            System.out.println("An error occurred.");
             e.printStackTrace();
-        } finally {
-            try {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
-                if (bufferedWriter != null) {
-                    bufferedWriter.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
+        try {
+
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
 }
